@@ -21,15 +21,15 @@ WORKDIR /
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 www-data
-RUN adduser --system --uid 1001 www-data
+RUN addgroup --system --gid 1001 app
+RUN adduser --system --uid 1001 app
 
-COPY --from=builder --chown=www-data:www-data /.next ./.next
-COPY --from=builder --chown=www-data:www-data /public ./public
+COPY --from=builder --chown=app:app /.next ./.next
+COPY --from=builder --chown=app:app /public ./public
 COPY --from=builder /node_modules ./node_modules
 COPY --from=builder /package.json ./package.json
 
-USER www-data
+USER app
 
 EXPOSE 3000
 
