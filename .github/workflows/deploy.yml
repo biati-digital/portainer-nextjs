@@ -38,3 +38,4 @@ jobs:
         if: success()
         env:
           webhook_url: "http://216.238.85.211:9443/api/stacks/webhooks/035d5ee2-9b8e-4241-83a3-8f39b3d2feba"
+          webhook_secret: "CKccJfNzqwaGjwDc"
