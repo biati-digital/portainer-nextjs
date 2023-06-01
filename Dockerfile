@@ -1,5 +1,5 @@
 FROM node:lts-alpine AS build
-WORKDIR /app
+WORKDIR /
 
 COPY package*.json ./
 RUN npm install
@@ -8,7 +8,7 @@ RUN npm run build
 RUN mkdir -p jsjsjsj
 
 FROM nginx:alpine AS runtime
-WORKDIR /app
+WORKDIR /
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -16,6 +16,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 www
 RUN adduser --system --uid 1001 www
 
+RUN rm -rf /www/*
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /www
 
