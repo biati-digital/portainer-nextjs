@@ -28,4 +28,14 @@ jobs:
         run: npm run build
 
       - name: Commit Changes
+        if: success()
         uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automatic Build
+
+      - name: Webhook
+        if: success()
+        uses: distributhor/workflow-webhook
+        with:
+          url: "http://216.238.85.211:9443/api/stacks/webhooks/035d5ee2-9b8e-4241-83a3-8f39b3d2feba"
+          json: '{ "repository": "${{github.event.repository.full_name}}", "number": "${{github.event.number}}", "created_at": "${{github.event.pull_request.created_at}}", "updated_at": "${{github.event.pull_request.updated_at}}" }'
