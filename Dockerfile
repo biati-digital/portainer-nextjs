@@ -1,24 +1,15 @@
-FROM node:lts-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:lts-alpine AS build
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN  npm install --production
-
-FROM node:lts-alpine AS builder
-WORKDIR /app
-COPY --from=deps /node_modules ./node_modules
+COPY package*.json ./
+RUN npm install
 COPY . .
-
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
 RUN npm run build
 
 FROM nginx:alpine AS runtime
+WORKDIR /app
 #RUN rm -rf /app/*
 RUN mkdir -p /app/hahahaha
-RUN mkdir -p /app/hulk
 #RUN touch /app/teststs.txt
 RUN mkdir -p /app/test
 
@@ -32,7 +23,6 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /app
 COPY --from=build /app/dist /app/test
 
-WORKDIR /app
 RUN chown -R www:www /app && chmod -R 755 /app && \
     chown -R www:www /var/cache/nginx && \
     chown -R www:www /var/log/nginx && \
