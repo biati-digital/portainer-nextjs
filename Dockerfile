@@ -11,7 +11,7 @@ VOLUME /usr/share/nginx/html
 RUN rm -r /usr/share/nginx/html
 RUN mkdir -p /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+#COPY --from=build /app/dist /usr/share/nginx/html
 
 WORKDIR /app
 RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
