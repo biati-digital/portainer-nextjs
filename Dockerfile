@@ -1,14 +1,24 @@
-FROM node:lts-alpine AS build
+FROM node:18-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN  npm install --production
+
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /node_modules ./node_modules
 COPY . .
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
 RUN npm run build
 
 FROM nginx:alpine AS runtime
 #RUN rm -rf /app/*
 RUN mkdir -p /app/hahahaha
+RUN mkdir -p /app/hulk
 #RUN touch /app/teststs.txt
 RUN mkdir -p /app/test
 
