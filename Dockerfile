@@ -1,38 +1,27 @@
+FROM node:lts-alpine AS build
+WORKDIR /app
 
-FROM node:18-alpine AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /
-
-COPY package.json package-lock.json ./
-RUN  npm install --production
-
-FROM node:18-alpine AS builder
-WORKDIR /
-COPY --from=deps /node_modules ./node_modules
+COPY package*.json ./
+RUN npm install
 COPY . .
-
-ENV NEXT_TELEMETRY_DISABLED 1
-
 RUN npm run build
 
-FROM node:18-alpine AS runner
-WORKDIR /
+FROM nginx:alpine AS runtime
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder --chown=nextjs:nodejs /.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /public ./public
-COPY --from=builder /node_modules ./node_modules
-COPY --from=builder /package.json ./package.json
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT 3000
-
-CMD ["npm", "start"]
+WORKDIR /app
+RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /usr/share/nginx/html && \
+    chown -R nginx:nginx /etc/nginx/conf.d
+RUN touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid
+USER nginx
+#EXPOSE <PORT_NUMBER>
+CMD ["nginx", "-g", "daemon off;"]
+#RUN chown www-data:www-data /usr/share/nginx/html/*
+#COPY --from=build ./docker-entrypoint.sh /docker-entrypoint.sh
+#RUN chmod +x /docker-entrypoint.sh
+#ENTRYPOINT ["/docker-entrypoint.sh"]
