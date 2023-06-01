@@ -10,7 +10,7 @@ FROM nginx:alpine AS runtime
 VOLUME /app
 RUN rm -rf /app/*
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /app
+#COPY --from=build /app/dist /app
 
 WORKDIR /app
 RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
