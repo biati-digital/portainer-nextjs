@@ -9,6 +9,8 @@ RUN npm run build
 FROM nginx:alpine AS runtime
 RUN rm -rf /app/*
 
+RUN mkdir -p /app/test
+
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -17,6 +19,7 @@ RUN adduser --system --uid 1001 www
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /app
+COPY --from=build /app/dist /app/test
 
 WORKDIR /app
 RUN chown -R www:www /app && chmod -R 755 /app && \
