@@ -7,6 +7,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine AS runtime
+VOLUME /app
 #RUN rm -rf /app/*
 
 RUN mkdir -p /app/test
@@ -30,7 +31,5 @@ RUN chown -R www:www /app && chmod -R 755 /app && \
 RUN touch /var/run/nginx.pid && \
     chown -R www:www /var/run/nginx.pid
 USER www
-
-VOLUME /app
 
 CMD ["nginx", "-g", "daemon off;"]
