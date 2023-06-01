@@ -8,7 +8,6 @@ RUN npm run build
 
 FROM nginx:alpine AS runtime
 RUN rm -rf /app/*
-VOLUME /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -28,5 +27,7 @@ RUN chown -R www:www /app && chmod -R 755 /app && \
 RUN touch /var/run/nginx.pid && \
     chown -R www:www /var/run/nginx.pid
 USER www
+
+VOLUME /app
 
 CMD ["nginx", "-g", "daemon off;"]
