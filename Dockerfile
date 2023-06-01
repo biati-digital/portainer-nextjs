@@ -16,6 +16,7 @@ RUN addgroup --system --gid 1001 www
 RUN adduser --system --uid 1001 www
 
 RUN rm -rf /website/public_html
+RUN mkdir /website
 RUN mkdir /website/public_html
 RUN mkdir /website/logs
 COPY ./nginx.conf /etc/nginx/nginx.conf
