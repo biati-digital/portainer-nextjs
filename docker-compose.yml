@@ -1,12 +1,9 @@
 version: "3.9"
 services:
   web:
-    image: nginx:alpine
+    build: ./
+    pull_policy: build
+    image: nextjs-static
     restart: unless-stopped
     ports:
       - 49365:8080
-    volumes:
-      - website:/usr/share/nginx/html
-
-volumes:
-  website:
