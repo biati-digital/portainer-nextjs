@@ -9,7 +9,7 @@ RUN npm run build
 FROM nginx:alpine AS runtime
 VOLUME /app
 #RUN rm -rf /app/*
-
+RUN touch /app/teststs.txt
 RUN mkdir -p /app/test
 
 ENV NODE_ENV production
