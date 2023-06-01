@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine AS runtime
-RUN rm -rf /app/*
+#RUN rm -rf /app/*
 
 RUN mkdir -p /app/test
 
