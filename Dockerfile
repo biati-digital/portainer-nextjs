@@ -8,7 +8,7 @@ RUN npm run build
 
 FROM nginx:alpine AS runtime
 VOLUME /app
-RUN rm -rf /usr/share/nginx/html/*
+RUN rm -rf /app/*
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /app
 
