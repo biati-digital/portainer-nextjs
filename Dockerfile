@@ -18,7 +18,7 @@ RUN adduser --system --uid 1001 www
 
 RUN rm -rf /www/*
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /www
+COPY --from=build /dist /www
 
 RUN chown -R www:www /www && chmod -R 755 /www && \
     chown -R www:www /var/cache/nginx && \
