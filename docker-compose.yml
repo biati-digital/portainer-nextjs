@@ -1,11 +1,9 @@
-version: '3.8'
+version: "3.9"
 services:
   web:
-    build:
-      context: ./
-      target: runner
+    build: ./
     pull_policy: build
+    image: nextjs-static
+    restart: unless-stopped
     ports:
-      - "3000:3000"
-    environment:
-      NODE_ENV: production
+      - 8080
