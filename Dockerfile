@@ -28,6 +28,6 @@ RUN touch /var/run/nginx.pid && \
     chown -R www:www /var/run/nginx.pid
 USER www
 
-VOLUME /www
+#VOLUME /www
 
 CMD ["nginx", "-g", "daemon off;"]
