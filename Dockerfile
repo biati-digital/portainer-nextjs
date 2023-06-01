@@ -8,8 +8,7 @@ RUN npm run build
 
 FROM nginx:alpine AS runtime
 VOLUME /usr/share/nginx/html
-USER 0
-RUN rm -r /usr/share/nginx/html/*
+RUN rm -rf /usr/share/nginx/html/*
 #COPY ./nginx.conf /etc/nginx/nginx.conf
 #COPY --from=build /app/dist /usr/share/nginx/html
 
