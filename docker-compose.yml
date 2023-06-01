@@ -6,4 +6,4 @@ services:
     image: nextjs-static
     restart: unless-stopped
     ports:
-      - 8080
+      - 49365:8080

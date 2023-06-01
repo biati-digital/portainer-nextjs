@@ -7,6 +7,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine AS runtime
+RUN rm -rf /app/*
 VOLUME /app
 
 ENV NODE_ENV production
@@ -15,7 +16,6 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 www
 RUN adduser --system --uid 1001 www
 
-RUN rm -rf /app/*
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /app
 
