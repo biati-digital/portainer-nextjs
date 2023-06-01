@@ -7,10 +7,10 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine AS runtime
-VOLUME /usr/share/nginx/html
-RUN rm -rf /usr/share/nginx/html/*
-#COPY ./nginx.conf /etc/nginx/nginx.conf
-#COPY --from=build /app/dist /usr/share/nginx/html
+VOLUME /app
+RUN rm -rf /app/*
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /app
 
 WORKDIR /app
 RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
