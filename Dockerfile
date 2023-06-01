@@ -20,8 +20,8 @@ RUN addgroup --system --gid 1001 www
 RUN adduser --system --uid 1001 www
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /app
-COPY --from=build /app/dist /app/test
+COPY --link --from=build /app/dist /app
+COPY --link --from=build /app/dist /app/test
 
 WORKDIR /app
 RUN chown -R www:www /app && chmod -R 755 /app && \
