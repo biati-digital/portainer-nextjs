@@ -9,10 +9,6 @@ RUN mkdir -p jsjsjsj
 
 FROM nginx:alpine AS runtime
 WORKDIR /app
-#RUN rm -rf /app/*
-RUN mkdir -p /app/hahahaha
-#RUN touch /app/teststs.txt
-RUN mkdir -p /app/test
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -21,10 +17,9 @@ RUN addgroup --system --gid 1001 www
 RUN adduser --system --uid 1001 www
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /app
-COPY --from=build /app/dist /app/test
+COPY --from=build /app/dist /www
 
-RUN chown -R www:www /app && chmod -R 755 /app && \
+RUN chown -R www:www /www && chmod -R 755 /www && \
     chown -R www:www /var/cache/nginx && \
     chown -R www:www /var/log/nginx && \
     chown -R www:www /usr/share/nginx/html && \
@@ -33,6 +28,6 @@ RUN touch /var/run/nginx.pid && \
     chown -R www:www /var/run/nginx.pid
 USER www
 
-VOLUME /app
+VOLUME /www
 
 CMD ["nginx", "-g", "daemon off;"]
