@@ -5,6 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
+RUN mkdir -p /app/jsjsjsj
 
 FROM nginx:alpine AS runtime
 WORKDIR /app
