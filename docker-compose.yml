@@ -5,5 +5,10 @@ services:
     pull_policy: build
     image: nextjs-static
     restart: unless-stopped
+    volumes:
+      - web:/app
     ports:
       - 49365:8080
+
+volumes:
+  web:
