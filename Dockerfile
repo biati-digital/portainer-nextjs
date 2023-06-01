@@ -1,25 +1,22 @@
 FROM node:lts-alpine AS build
-WORKDIR /
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm run build
 
 FROM nginx:alpine AS runtime
-WORKDIR /
-
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
 RUN addgroup --system --gid 1001 www
 RUN adduser --system --uid 1001 www
 
-RUN rm -rf /www/*
-COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /dist /www
-
-RUN chown -R www:www /www && chmod -R 755 /www && \
+WORKDIR /app
+RUN chown -R www:www /app && chmod -R 755 /app && \
     chown -R www:www /var/cache/nginx && \
     chown -R www:www /var/log/nginx && \
     chown -R www:www /usr/share/nginx/html && \
@@ -27,7 +24,5 @@ RUN chown -R www:www /www && chmod -R 755 /www && \
 RUN touch /var/run/nginx.pid && \
     chown -R www:www /var/run/nginx.pid
 USER www
-
-#VOLUME /www
 
 CMD ["nginx", "-g", "daemon off;"]
