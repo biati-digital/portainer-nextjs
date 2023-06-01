@@ -6,7 +6,7 @@ services:
     image: nextjs-static1
     restart: unless-stopped
     volumes:
-      - web:/www
+      - web:/website
     ports:
       - 49365:8080
 

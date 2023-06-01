@@ -20,7 +20,7 @@ RUN mkdir /website
 RUN mkdir /website/public_html
 RUN mkdir /website/logs
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /dist /www
+COPY --from=build /dist /website/public_html
 
 RUN chown -R www:www /website/public_html && chmod -R 755 /website/public_html && \
     chown -R www:www /var/cache/nginx && \
