@@ -1,4 +1,6 @@
 FROM node:lts-alpine AS build
+VOLUME /usr/share/nginx/html
+RUN rm -r /usr/share/nginx/html/*
 WORKDIR /app
 
 COPY package*.json ./
