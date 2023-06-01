@@ -3,7 +3,7 @@ services:
   web:
     build: ./
     pull_policy: build
-    image: nextjs-static
+    image: nextjs-static1
     restart: unless-stopped
     volumes:
       - web:/app
